@@ -9,7 +9,7 @@ The **WPRK Radio Android App** is a sleek and user-friendly mobile application t
 - **Live Streaming**: Enjoy 91.5 FM WPRK's live radio stream, allowing you to tune in to your favorite shows, music, and discussions anytime and anywhere.
 - **Website Integration**: Seamlessly access the latest articles, events, and updates from the official WPRK website, providing you with a comprehensive view of the station's offerings.
 - **User-Friendly Interface**: The app offers an intuitive and visually appealing user interface, making navigation and content discovery a breeze.
-- **Favorite Shows**: Easily access and follow your favorite shows and content from WPRK.
+- **Favorite Shows**: Easily access and follow your favorites from WPRK.
 - **Multimedia Experience**: Listen to music, podcasts, and live broadcasts, enhancing your radio experience.
 - **Stay Informed**: Stay up-to-date with the latest news, events, and announcements from WPRK radio.
 
