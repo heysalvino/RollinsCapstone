@@ -2,7 +2,7 @@
 
 ## Overview
 
-The **WPRK Radio Android App** is a sleek and user-friendly mobile application that brings the world of 91.5 FM WPRK radio to your Android device. Built with Android Studio and Kotlin, this app offers a seamless way to access the latest content from the current [WPRK website](https://www.wprk.org) while adding a live streaming feature.
+The **WPRK Radio Android App** is a sleek and user-friendly mobile application that brings the world of 91.5 FM WPRK radio to your Android device. Built with Android Studio and Kotlin, this app offers a seamless way to access the latest content from the current [WPRK website](https://wprk.org/) while adding a live streaming feature.
 
 ## Features
 
