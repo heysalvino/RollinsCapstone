@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#6200EE</color>
+    <color name="colorPrimaryDark">#000000</color>
+    <color name="colorAccent">#03DAC5</color>
+    <color name="rollinsBlue">#0071BA</color>
+    <color name="rollinsGold">#FACF00</color>
+    <color name="websitePink">#f6c0c0</color>
+    <color name="websiteGrey">#565c68</color>
+    <color name="black">#000000</color>
+</resources>
