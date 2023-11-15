@@ -6,81 +6,80 @@ import android.content.Context;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageButton;
 import java.io.IOException;
-import static android.webkit.WebView.*;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final String WEBVIEW_URL = "http://wprk.org/about-us/contact-us/";
+    private static final String STREAM_URL = "http://s9.voscast.com:7024";
+
     private WebView webView;
     private ImageButton streamButton;
-    private MediaPlayer mediaPlayer = new MediaPlayer();
+    private MediaPlayer mediaPlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Toolbar setup
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        // WebView setup
         webView = findViewById(R.id.webview);
-        webView.setWebViewClient(new WebViewClient());
-        webView.loadUrl("http://wprk.org/about-us/contact-us/");
-        WebSettings webSettings = webView.getSettings();
-        webSettings.setJavaScriptEnabled(true);
+        setupWebView();
 
-        // MediaPlayer setup
+        mediaPlayer = new MediaPlayer();
         setupMediaPlayer();
 
-        // Stream button setup
+        streamButton = findViewById(R.id.streamButton);
         setupStreamButton();
     }
 
+    private void setupWebView() {
+        webView.setWebViewClient(new WebViewClient());
+        webView.loadUrl(WEBVIEW_URL);
+        WebSettings webSettings = webView.getSettings();
+        webSettings.setJavaScriptEnabled(true);
+    }
+
     private void setupMediaPlayer() {
-        // MediaPlayer setup
-        Uri wprkStream = Uri.parse("http://s9.voscast.com:7024");
         try {
-            mediaPlayer.setDataSource(getApplicationContext(), wprkStream);
+            mediaPlayer.setDataSource(getApplicationContext(), Uri.parse(STREAM_URL));
+            mediaPlayer.prepareAsync();
         } catch (IOException e) {
-            e.printStackTrace();
-            // Handle the error (e.g., show a toast, log the error)
+            Log.e("MainActivity", "Error setting up MediaPlayer", e);
+            // Show a user-friendly error message
         }
 
-        // Prepare the stream, and don't enable the button
-        mediaPlayer.prepareAsync();
-        mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-            @Override
-            public void onPrepared(MediaPlayer mp) {
-                streamButton.setImageResource(R.drawable.baseline_play_circle_filled_24);
-                streamButton.setEnabled(true);
-            }
+        mediaPlayer.setOnPreparedListener(mp -> {
+            streamButton.setImageResource(R.drawable.baseline_play_circle_filled_24);
+            streamButton.setEnabled(true);
+        });
+
+        mediaPlayer.setOnErrorListener((mp, what, extra) -> {
+            Log.e("MainActivity", "MediaPlayer error occurred: " + what);
+            // Handle the error, update UI accordingly
+            return true;
         });
     }
 
     private void setupStreamButton() {
-        // Stream button setup
-        streamButton = findViewById(R.id.streamButton);
         streamButton.setEnabled(false);
         streamButton.setImageResource(R.drawable.baseline_loop_24);
 
-        // When the button is clicked, pause or play the music
-        streamButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mediaPlayer.isPlaying()) {
-                    mediaPlayer.pause();
-                    streamButton.setImageResource(R.drawable.baseline_play_circle_filled_24);
-                } else {
-                    mediaPlayer.start();
-                    streamButton.setImageResource(R.drawable.baseline_pause_circle_filled_24);
-                }
+        streamButton.setOnClickListener(v -> {
+            if (mediaPlayer.isPlaying()) {
+                mediaPlayer.pause();
+                streamButton.setImageResource(R.drawable.baseline_play_circle_filled_24);
+            } else {
+                mediaPlayer.start();
+                streamButton.setImageResource(R.drawable.baseline_pause_circle_filled_24);
             }
         });
     }
@@ -95,11 +94,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+        if (mediaPlayer.isPlaying()) {
+            mediaPlayer.pause();
+        }
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
         if (mediaPlayer != null) {
             mediaPlayer.release();
-            mediaPlayer = null;
         }
     }
 }
